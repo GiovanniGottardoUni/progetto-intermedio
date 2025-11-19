@@ -1,1 +1,1 @@
-Programma intermedio
+Programma intermedio, gruppo composto da Romano Matteo, Piombo Nicoli Giovanni, Gottardo Giovanni
