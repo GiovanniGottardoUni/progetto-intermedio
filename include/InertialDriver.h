@@ -7,8 +7,10 @@
 #include "Misura.h"
 
 class InertialDriver {
-public:
-private:
+    public:
+    
+    private:
+
 };
 
 #endif // INERTIAL_DRIVER_H
