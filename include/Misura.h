@@ -2,14 +2,23 @@
 #define MISURA_H
 
 #include "lettura.h"
+#include <iostream>
 
 class Misura {
-private:
-    
-    static const size_t NUM_SENSORI = 17;
-
 public:
+    Misura(const Lettura input[]);
 
+    Misura(std::initializer_list<Lettura> init);
+
+    Lettura& operator[] (const size_t index){ return data[index]; }
+    const Lettura& operator[] (const size_t index) const { return data[index];}
+
+    int getNumSensors() const { return NUM_SENSORS;}
+
+private:
+    static constexpr int NUM_SENSORS = 17;
+    Lettura data[NUM_SENSORS];
+  
 };
 
 #endif

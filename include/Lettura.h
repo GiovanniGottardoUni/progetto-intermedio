@@ -12,12 +12,8 @@ private:
     double roll_a;
 
 public:
-
-    //costruttore senza parametri
-    Lettura() : yaw_v(0), yaw_a(0), pitch_v(0), pitch_a(0), roll_v(0), roll_a(0) {}
-
     //costruttore con parametri
-    Lettura(double yv, double ya, double pv, double pa, double rv, double ra)
+    Lettura(double yv = 0, double ya = 0, double pv = 0, double pa = 0, double rv = 0, double ra = 0)
         : yaw_v(yv), yaw_a(ya), pitch_v(pv), pitch_a(pa), roll_v(rv), roll_a(ra) {}
 
     double getYawV()   const { return yaw_v; }
