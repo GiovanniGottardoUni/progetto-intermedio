@@ -27,10 +27,11 @@ void InertialDriver::push_back(const Misura &m)
 }
 
 Misura InertialDriver::pop_front(const Misura& out) {
-    if(current_size > 0) {
-        current_size--;
-        return buffer.at(incrementIndex(head));
+    if (current_size == 0) {
+        throw std::out_of_range("Buffer vuoto: impossibile pop_front");
     }
+    current_size--;
+    return buffer.at(incrementIndex(head));
 }
 
 void InertialDriver::clear_buffer(){
