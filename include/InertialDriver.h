@@ -15,6 +15,8 @@ private:
     int head;                // indice del prossimo elemento da leggere
     static constexpr size_t BUFFER_DIM = 100;
 
+    int incrementIndex(int index);
+
 public:
     InertialDriver();
 
@@ -24,7 +26,7 @@ public:
 
     Misura pop_front(const Misura& out);
 
-    Lettura get_reading(int index) const; // const->leggo i dati della classe ma non li modifico
+    Lettura get_reading(const int index) const; // const->leggo i dati della classe ma non li modifico
     
     void clear_buffer();
 

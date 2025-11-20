@@ -26,6 +26,13 @@ void InertialDriver::push_back(const Misura &m)
     }
 }
 
+Misura InertialDriver::pop_front(const Misura& out) {
+    if(current_size > 0) {
+        current_size--;
+        return buffer.at(incrementIndex(head));
+    }
+}
+
 void InertialDriver::clear_buffer(){
     current_size = 0;
     head = 0;
@@ -54,4 +61,16 @@ std::ostream &operator<<(std::ostream &os, const InertialDriver &driver){
     return os;
 }
 
-Lettura getReading()
+Lettura InertialDriver::get_reading(int index) const{
+    if(current_size == 0 || index < 0 || index >= buffer[head].getNumSensors()){
+        throw std::out_of_range("Indice non valido o buffer vuoto");
+    }
+    int last = (tail - 1 + BUFFER_DIM) % BUFFER_DIM;
+    return buffer[last][index];
+}
+
+    int incrementIndex(int index) {
+        int oldIndex = index;
+        index = (index + 1) % BUFFER_DIM;
+        return oldIndex;
+    };
