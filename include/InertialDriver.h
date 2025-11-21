@@ -24,7 +24,7 @@ public:
 
     void push_back(const Misura& m);
 
-    Misura pop_front(const Misura& out);
+    Misura pop_front();
 
     Lettura get_reading(const int index) const; // const->leggo i dati della classe ma non li modifico
     
