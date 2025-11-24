@@ -1,4 +1,4 @@
-#include "Misura.h"
+#include "../include/Misura.h"
 #include <iostream>
 
 Misura::Misura(const Lettura input[])
