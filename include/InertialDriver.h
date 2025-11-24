@@ -6,31 +6,33 @@
 #include "MyVector.h"
 #include "Misura.h"
 
-class InertialDriver
-{
-private:
-    MyVector<Misura> buffer; // il buffer circolare
-    int current_size = 0;    // numero elementi nella coda
-    int tail;                // indice del prossimo elemento da scrivere
-    int head;                // indice del prossimo elemento da leggere
-    static constexpr size_t BUFFER_DIM = 100;
+class InertialDriver {
 
-    int incrementIndex(int index);
+    private:
+        MyVector<Misura> buffer;    // il buffer circolare
+        int current_size = 0;       // numero elementi nella coda
+        int tail = 0;               // indice del prossimo elemento da scrivere
+        int head = 0;               // indice del prossimo elemento da leggere
+        
+        int incrementIndex(int& index); // incrementa index circolarmente e ritorna il vecchio valore
+        
+    public:
 
-public:
-    InertialDriver();
+        static constexpr size_t BUFFER_DIM = 100;
 
-    int get_current_size() const { return current_size; };
+        InertialDriver();
 
-    void push_back(const Misura& m);
+        int get_current_size() const { return current_size; };
 
-    Misura pop_front();
+        void push_back(const Misura& m);
 
-    Lettura get_reading(const int index) const; // const->leggo i dati della classe ma non li modifico
-    
-    void clear_buffer();
+        Misura& pop_front();
 
-    friend std::ostream& operator<<(std::ostream& os, const InertialDriver& driver);
+        Lettura get_reading(const int index) const; // const->leggo i dati della classe ma non li modifico
+        
+        void clear_buffer();
+
+        friend std::ostream& operator<<(std::ostream& os, const InertialDriver& driver);
 
 };
 

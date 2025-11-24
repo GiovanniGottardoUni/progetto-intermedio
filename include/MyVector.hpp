@@ -94,4 +94,15 @@ void MyVector<T>::reserve(size_t new_capacity) {
     }
 }
 
+// template <typename T>
+// std::ostream &operator<<(std::ostream& os, const MyVector<T>& vec) {
+//     os << "[ ";
+//     for (size_t i = 0; i < vec.getSize(); i++) {
+//         os << vec[i];
+//         if (i + 1 < vec.getSize()) os << ", ";
+//     }
+//     os << " ]";
+//     return os;
+// }
+
 #endif // MYVECTOR_HPP

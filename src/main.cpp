@@ -1,9 +1,13 @@
 #include <iostream>
-#include "InertialDriver.h"
-#include "Misura.h"
-#include "Lettura.h"
+#include "../include/InertialDriver.h"
+#include "../include/Misura.h"
+#include "../include/Lettura.h"
+#include <chrono>
+#include <thread>
+#include <cstdlib>
 
-// Helper per creare dati fittizi
+
+// Helper per creare dati
 Misura generaMisuraTest(double val) {
     Lettura letture[17];
     for (int i = 0; i < 17; ++i) {
@@ -13,7 +17,6 @@ Misura generaMisuraTest(double val) {
 }
 
 int main() {
-    std::cout << "=== TEST SUITE COMPLETA ===" << std::endl;
 
     InertialDriver driver;
 
@@ -34,11 +37,12 @@ int main() {
         std::cout << "Test 3 ERROR: " << e.what() << std::endl;
     }
 
-    // --- TEST 4: Rimozione (Pop Front) ---
+   // --- TEST 4: Rimozione (Pop Front) ---
     try {
         Misura m = driver.pop_front();
         std::cout << "Test 4 (Pop): Valore rimosso (atteso 1.0) -> " << m[0].getYawV() << std::endl;
         std::cout << "Test 4 (Size): Size dopo pop (atteso 1) -> " << driver.get_current_size() << std::endl;
+        std::cout << "Test 4 (Stampa): Dovrebbe mostrare valori 2.0:" << driver << std::endl;
     } catch (std::exception& e) {
         std::cout << "Test 4 ERROR: " << e.what() << std::endl;
     }
@@ -50,7 +54,7 @@ int main() {
     
     // Il buffer è da 100. I primi 5 (0,1,2,3,4) sono persi. Il più vecchio è il 5.
     Misura old = driver.pop_front();
-    std::cout << "Test 5 (Circular): Il più vecchio è (atteso 5.0) -> " << old[0].getYawV() << std::endl;
+    std::cout << "Test 5 (Circular): Il piu' vecchio e' (atteso 5.0) -> " << old[0].getYawV() << std::endl;
 
     // --- TEST 6: Gestione Buffer Vuoto ---
     driver.clear_buffer();
