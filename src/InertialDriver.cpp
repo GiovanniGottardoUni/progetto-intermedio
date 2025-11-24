@@ -1,8 +1,6 @@
 #include "../include/InertialDriver.h"
 #include <iostream>
 
-InertialDriver::InertialDriver() : buffer(BUFFER_DIM) {}
-
 void InertialDriver::push_back(const Misura &measure)
 {
     buffer[tail] = measure;
@@ -18,10 +16,10 @@ void InertialDriver::push_back(const Misura &measure)
 }
 
 Misura &InertialDriver::pop_front()
-{ // rimosso parametro const Misura& out
+{
     if (current_size == 0)
     {
-        throw std::out_of_range("Buffer vuoto: impossibile pop_front");
+        throw std::out_of_range("**errore**: buffer impossibile pop_front");
     }
     current_size--;
     return buffer[incrementIndex(head)];
@@ -44,22 +42,19 @@ std::ostream &operator<<(std::ostream &os, const InertialDriver &driver)
 
     int last = (driver.tail - 1 + driver.BUFFER_DIM) % driver.BUFFER_DIM;
     os << "Ultima misura: ";
-    for (int i = 0; i < driver.get_current_size(); ++i)
-    {
-        os << "("
-           << driver.buffer[last][i].getYawV() << ", "
-           << driver.buffer[last][i].getYawA() << ", "
-           << driver.buffer[last][i].getPitchV() << ", "
-           << driver.buffer[last][i].getPitchA() << ", "
-           << driver.buffer[last][i].getRollV() << ", "
-           << driver.buffer[last][i].getRollA() << ") ";
-    }
+    os << "("
+       << driver.buffer[last][0].getYawV() << ", "
+       << driver.buffer[last][1].getYawA() << ", "
+       << driver.buffer[last][2].getPitchV() << ", "
+       << driver.buffer[last][3].getPitchA() << ", "
+       << driver.buffer[last][4].getRollV() << ", "
+       << driver.buffer[last][5].getRollA() << ") ";
     return os;
 }
 
 Lettura InertialDriver::get_reading(int index) const
 {
-    if (current_size == 0 || index < 0 || index >= buffer[head].NUM_SENSORS)
+    if (current_size == 0 || index < 0 || index >= buffer[head].NUM_SENSORS) // controllo validita' indice
     {
         throw std::out_of_range("Indice non valido o buffer vuoto");
     }
@@ -67,9 +62,13 @@ Lettura InertialDriver::get_reading(int index) const
     return buffer[last][index];
 }
 
- int InertialDriver::incrementIndex(int& index) {
-     int oldIndex = index;
-     index = (index + 1) % BUFFER_DIM;
-     return oldIndex;
- };
+// Incrementa l'indice passato in modo circolare
+// Il parametro è passato per riferimento (&) così da modificare direttamente il suo valore
+// restituisce il valore dell'indice preincrementazione
 
+int InertialDriver::incrementIndex(int &index)
+{
+    int oldIndex = index;
+    index = (index + 1) % BUFFER_DIM;
+    return oldIndex;
+};

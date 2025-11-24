@@ -6,34 +6,79 @@
 #include "MyVector.h"
 #include "Misura.h"
 
-class InertialDriver {
+/**
+ * @class InertialDriver
+ * @brief Classe che gestisce un buffer circolare di misure.
+ *
+ * La classe implementa funzioni per inserire, leggere e rimuovere
+ * elementi da un buffer di dimensione fissa. Gestisce la logica
+ * di buffer circolare e sovrascrive i dati più vecchi quando il
+ * buffer è pieno.
+ */
+class InertialDriver
+{
 
-    private:
-        MyVector<Misura> buffer;    // il buffer circolare
-        int current_size = 0;       // numero elementi nella coda
-        int tail = 0;               // indice del prossimo elemento da scrivere
-        int head = 0;               // indice del prossimo elemento da leggere
-        
-        int incrementIndex(int& index); // incrementa index circolarmente e ritorna il vecchio valore
-        
-    public:
+public:
+    static constexpr size_t BUFFER_DIM = 100; // dimiensione massima del buffer
 
-        static constexpr size_t BUFFER_DIM = 100;
+    /**
+     * @brief Costruttore della classe.
+     *
+     * Inizializza il buffer.
+     */
+    InertialDriver() : buffer(BUFFER_DIM) {}
 
-        InertialDriver();
+    /**
+     * @brief Inserisce una misura nel buffer.
+     *
+     * @param measure Misura da inserire.
+     */
+    void push_back(const Misura &measure);
 
-        int get_current_size() const { return current_size; };
+    /**
+     * @brief Rimuove la misura più vecchia dal buffer.
+     *
+     * @return Riferimento alla misura rimossa.
+     * @throw std::out_of_range se il buffer è vuoto.
+     */
+    Misura &pop_front();
 
-        void push_back(const Misura& m);
+    /**
+     * @brief Legge un valore specifico da una misura nel buffer.
+     *
+     * @param index Indice della misura.
+     * @return Lettura desiderata.
+     * @throw std::out_of_range se l'indice non è valido.
+     */
+    Lettura get_reading(const int index) const;
 
-        Misura& pop_front();
+    /**
+     * @brief ritorna il numero di elementi nel buffer.
+     */
+    int get_current_size() const { return current_size; };
 
-        Lettura get_reading(const int index) const; // const->leggo i dati della classe ma non li modifico
-        
-        void clear_buffer();
+    /**
+     * @brief Svuota completamente il buffer.
+     */
+    void clear_buffer();
 
-        friend std::ostream& operator<<(std::ostream& os, const InertialDriver& driver);
+    /**
+     * @brief Stampa il contenuto del buffer su uno stream.
+     */
+    friend std::ostream &operator<<(std::ostream &os, const InertialDriver &driver);
 
+private:
+    MyVector<Misura> buffer; // il buffer circolare
+    int current_size = 0;    // numero elementi nella coda
+    int tail = 0;            // indice del prossimo elemento da scrivere
+    int head = 0;            // indice del prossimo elemento da leggere
+
+    /**
+     * @brief Incrementa index circolarmente e ritorna il vecchio valore.
+     *
+     * @param index tail/head del buffer.
+     */
+    int incrementIndex(int &index);
 };
 
 #endif // INERTIAL_DRIVER_H
